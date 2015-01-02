@@ -14,10 +14,10 @@ module SSHKit
       end
 
       def execute(*args, &block)
-        host_url = String(host.hostname)
-        host_url = '%s@%s' % [host.username, host_url] if host.username
-        result = 'ssh %s -t "%s"' % [host_url, command(*args).to_command]
-        output << Command.new(result, host: host)
+        ssh_command = Command.new(host).to_s
+        local_command = command(*args).to_command
+        result = %[#{ssh_command} -t "#{local_command}"]
+        output << SSHKit::Command.new(result, host: host)
         system(result)
       end
     end
