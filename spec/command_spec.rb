@@ -62,5 +62,11 @@ describe SSHKit::Interactive::Command do
       expect(command).to receive(:options_str).and_return('')
       expect(command.to_s).to eq('ssh example.com')
     end
+
+    it "accepts a remote command" do
+      host = SSHKit::Host.new('example.com')
+      command = SSHKit::Interactive::Command.new(host, 'ls')
+      expect(command.to_s).to eq('ssh -A -t example.com "ls"')
+    end
   end
 end

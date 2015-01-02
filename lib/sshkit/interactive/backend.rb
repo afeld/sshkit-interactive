@@ -14,11 +14,13 @@ module SSHKit
       end
 
       def execute(*args, &block)
-        ssh_command = Command.new(host).to_s
-        local_command = command(*args).to_command
-        result = %[#{ssh_command} -t "#{local_command}"]
-        output << SSHKit::Command.new(result, host: host)
-        system(result)
+        remote_command = command(*args)
+        output << remote_command
+
+        remote_command_str = remote_command.to_command
+        ssh_command = Command.new(host, remote_command_str).to_s
+
+        system(ssh_command)
       end
     end
   end

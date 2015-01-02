@@ -1,10 +1,11 @@
 module SSHKit
   module Interactive
     class Command
-      attr_reader :host
+      attr_reader :host, :remote_command
 
-      def initialize(host)
+      def initialize(host, remote_command=nil)
         @host = host
+        @remote_command = remote_command
       end
 
       def netssh_options
@@ -31,6 +32,8 @@ module SSHKit
         opts << %{-o "PreferredAuthentications #{netssh_options[:auth_methods].join(',')}"} if netssh_options[:auth_methods]
         opts << %{-o "ProxyCommand #{netssh_options[:proxy].command_line_template}"} if netssh_options[:proxy]
         opts << "-p #{netssh_options[:port]}" if netssh_options[:port]
+        opts << '-t' if self.remote_command
+
         opts
       end
 
@@ -39,11 +42,16 @@ module SSHKit
       end
 
       def to_s
-        [
+        parts = [
           'ssh',
           self.options_str,
           self.hostname
-        ].reject(&:empty?).join(' ')
+        ]
+        if self.remote_command
+          parts << %{"#{self.remote_command}"}
+        end
+
+        parts.reject(&:empty?).join(' ')
       end
     end
   end
