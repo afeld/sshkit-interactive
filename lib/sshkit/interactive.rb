@@ -1,4 +1,5 @@
-require "sshkit/interactive/version"
+require_relative 'interactive/version'
+require_relative 'interactive/backend'
 
 module SSHKit
   module Interactive
