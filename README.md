@@ -1,6 +1,6 @@
 # SSHKit::Interactive
 
-TODO: Write a gem description
+An SSHKit backend that allows you to execute interactive commands on your servers.
 
 ## Installation
 
@@ -14,13 +14,37 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
+If you're using Capistrano, add the following to your Capfile:
 
-    $ gem install sshkit-interactive
+```ruby
+require 'sshkit/interactive'
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+From SSHKit, use the interactive backend (which makes a system call to `ssh` under the hood), then execute commands as normal.
+
+```ruby
+SSHKit.config.backend = SSHKit::Interactive::Backend
+hosts = %w{my.server.com}
+on hosts do |host|
+  execute(:vim)
+end
+```
+
+Note that you will probably only want to execute on a single host. In Capistrano, it might look something like this:
+
+```ruby
+namespace :rails do
+  desc "Run Rails console"
+  task :console do
+    SSHKit.config.backend = SSHKit::Interactive::Backend
+    on primary(:app) do |host|
+      execute(:rails, :console)
+    end
+  end
+end
+```
 
 ## Contributing
 
