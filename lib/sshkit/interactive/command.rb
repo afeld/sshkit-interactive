@@ -9,6 +9,7 @@ module SSHKit
         @remote_command = remote_command
       end
 
+      # see http://net-ssh.github.io/net-ssh/classes/Net/SSH.html#method-c-start for descriptions
       def netssh_options
         self.host.netssh_options
       end
@@ -21,18 +22,44 @@ module SSHKit
         self.host.hostname
       end
 
+      def forward_agent?
+        !!self.netssh_options[:forward_agent]
+      end
+
+      def keys
+        self.netssh_options[:keys] || []
+      end
+
+      def auth_methods
+        self.netssh_options[:auth_methods]
+      end
+
+      def auth_methods_str
+        self.auth_methods.join(',')
+      end
+
+      def proxy
+        self.netssh_options[:proxy]
+      end
+
+      def proxy_command
+        self.proxy.command_line_template
+      end
+
+      def port
+        self.netssh_options[:port]
+      end
+
       def options
         opts = []
-        opts << '-A' if netssh_options[:forward_agent]
-        if netssh_options[:keys]
-          netssh_options[:keys].each do |k|
-            opts << "-i #{k}"
-          end
+        opts << '-A' if self.forward_agent?
+        self.keys.each do |key|
+          opts << "-i #{key}"
         end
-        opts << "-l #{user}" if user
-        opts << %{-o "PreferredAuthentications #{netssh_options[:auth_methods].join(',')}"} if netssh_options[:auth_methods]
-        opts << %{-o "ProxyCommand #{netssh_options[:proxy].command_line_template}"} if netssh_options[:proxy]
-        opts << "-p #{netssh_options[:port]}" if netssh_options[:port]
+        opts << "-l #{self.user}" if self.user
+        opts << %{-o "PreferredAuthentications #{self.auth_methods_str}"} if self.auth_methods
+        opts << %{-o "ProxyCommand #{self.proxy_command}"} if self.proxy
+        opts << "-p #{self.port}" if self.port
         opts << '-t' if self.remote_command
 
         opts
