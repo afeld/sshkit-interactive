@@ -1,6 +1,6 @@
 require "sshkit/interactive/version"
 
-module Sshkit
+module SSHKit
   module Interactive
     # Your code goes here...
   end

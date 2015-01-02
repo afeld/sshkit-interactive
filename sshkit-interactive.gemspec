@@ -5,7 +5,7 @@ require 'sshkit/interactive/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "sshkit-interactive"
-  spec.version       = Sshkit::Interactive::VERSION
+  spec.version       = SSHKit::Interactive::VERSION
   spec.authors       = ["Aidan Feldman"]
   spec.email         = ["aidan.feldman@gsa.gov"]
   spec.summary       = %q{TODO: Write a short summary. Required.}

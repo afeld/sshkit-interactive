@@ -1,4 +1,4 @@
-# Sshkit::Interactive
+# SSHKit::Interactive
 
 TODO: Write a gem description
 
