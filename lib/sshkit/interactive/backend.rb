@@ -17,7 +17,7 @@ module SSHKit
         host_url = String(host.hostname)
         host_url = '%s@%s' % [host.username, host_url] if host.username
         result = 'ssh %s -t "%s"' % [host_url, command(*args).to_command]
-        output << Command.new(result)
+        output << Command.new(result, host: host)
         system(result)
       end
     end
