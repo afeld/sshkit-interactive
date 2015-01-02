@@ -7,10 +7,9 @@ Gem::Specification.new do |spec|
   spec.name          = "sshkit-interactive"
   spec.version       = SSHKit::Interactive::VERSION
   spec.authors       = ["Aidan Feldman"]
-  spec.email         = ["aidan.feldman@gsa.gov"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.email         = ["aidan.feldman@gmail.com"]
+  spec.summary       = %q{An SSHKit backend that allows you to execute interactive commands on your servers. }
+  spec.homepage      = "https://github.com/afeld/sshkit-interactive"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
