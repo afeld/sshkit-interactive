@@ -16,9 +16,7 @@ module SSHKit
       def execute(*args, &block)
         remote_command = command(*args)
         output << remote_command
-
-        remote_command_str = remote_command.to_command
-        Command.new(host, remote_command_str).execute
+        Command.new(host, remote_command).execute
       end
     end
   end

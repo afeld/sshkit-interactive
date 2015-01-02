@@ -3,6 +3,7 @@ module SSHKit
     class Command
       attr_reader :host, :remote_command
 
+      # remote_command can be an SSHKit::Command or a String
       def initialize(host, remote_command=nil)
         @host = host
         @remote_command = remote_command
@@ -41,15 +42,21 @@ module SSHKit
         self.options.join(' ')
       end
 
+      def remote_command_str
+        if self.remote_command
+          %{"#{self.remote_command}"}
+        else
+          ''
+        end
+      end
+
       def to_s
         parts = [
           'ssh',
           self.options_str,
-          self.hostname
+          self.hostname,
+          self.remote_command_str
         ]
-        if self.remote_command
-          parts << %{"#{self.remote_command}"}
-        end
 
         parts.reject(&:empty?).join(' ')
       end
