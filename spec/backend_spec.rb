@@ -18,5 +18,18 @@ describe SSHKit::Interactive::Backend do
         backend.execute('ls')
       end
     end
+
+    it "respects the specified user" do
+      backend.as('deployer') do
+        expect_system_call('ssh -A -t example.com "sudo -u deployer && /usr/bin/env ls"')
+        backend.execute('ls')
+      end
+    end
+
+    it "respects the specified group"
+
+    it "respects the specified env"
+
+    it "respects the specified user"
   end
 end

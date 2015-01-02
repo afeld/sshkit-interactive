@@ -70,6 +70,22 @@ module SSHKit
         self.options.join(' ')
       end
 
+      def remote_user
+        if self.remote_command.is_a?(SSHKit::Command)
+          self.remote_command.options[:user]
+        else
+          nil
+        end
+      end
+
+      def su_command
+        if self.remote_user
+          "sudo -u #{self.remote_user}"
+        else
+          nil
+        end
+      end
+
       def path
         if self.remote_command.is_a?(SSHKit::Command)
           self.remote_command.options[:in]
@@ -88,6 +104,7 @@ module SSHKit
 
       def remote_commands
         [
+          self.su_command,
           self.cd_command,
           self.remote_command
         ].compact
