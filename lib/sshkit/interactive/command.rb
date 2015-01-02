@@ -19,7 +19,7 @@ module SSHKit
         self.host.hostname
       end
 
-      def ssh_options_str
+      def options
         opts = []
         opts << '-A' if netssh_options[:forward_agent]
         if netssh_options[:keys]
@@ -31,14 +31,18 @@ module SSHKit
         opts << %{-o "PreferredAuthentications #{netssh_options[:auth_methods].join(',')}"} if netssh_options[:auth_methods]
         opts << %{-o "ProxyCommand #{netssh_options[:proxy].command_line_template}"} if netssh_options[:proxy]
         opts << "-p #{netssh_options[:port]}" if netssh_options[:port]
-        opts.join(' ')
+        opts
+      end
+
+      def options_str
+        self.options.join(' ')
       end
 
       def to_s
         [
           'ssh',
-          ssh_options_str,
-          hostname
+          self.options_str,
+          self.hostname
         ].reject(&:empty?).join(' ')
       end
     end
