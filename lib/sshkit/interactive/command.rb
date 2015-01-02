@@ -53,6 +53,10 @@ module SSHKit
 
         parts.reject(&:empty?).join(' ')
       end
+
+      def execute
+        system(self.to_s)
+      end
     end
   end
 end

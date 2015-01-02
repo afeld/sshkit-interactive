@@ -18,9 +18,7 @@ module SSHKit
         output << remote_command
 
         remote_command_str = remote_command.to_command
-        ssh_command = Command.new(host, remote_command_str).to_s
-
-        system(ssh_command)
+        Command.new(host, remote_command_str).execute
       end
     end
   end
