@@ -1,9 +1,7 @@
+# based on https://github.com/jetthoughts/j-cap-recipes/blob/be9dffe279b7bee816c9bafcb3633109096b20d5/lib/sshkit/backends/ssh_command.rb
 module SSHKit
-
-  module Backend
-
-    class SshCommand < Printer
-
+  module Interactive
+    class Backend < SSHKit::Backend::Printer
       def run
         instance_exec(host, &@block)
       end
@@ -22,7 +20,6 @@ module SSHKit
         output << Command.new(result)
         system(result)
       end
-
     end
   end
 end
