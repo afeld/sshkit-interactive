@@ -1,5 +1,7 @@
 # SSHKit::Interactive
 
+[![Build Status](https://travis-ci.org/afeld/sshkit-interactive.svg?branch=master)](https://travis-ci.org/afeld/sshkit-interactive)
+
 An [SSHKit](https://github.com/capistrano/sshkit) [backend](https://github.com/capistrano/sshkit/tree/master/test/unit/backends) that allows you to execute interactive commands on your servers. Remote commands that you might want to use this for:
 
 * A Rails console
