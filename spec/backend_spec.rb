@@ -11,5 +11,12 @@ describe SSHKit::Interactive::Backend do
       expect_system_call('ssh -A -t example.com "/usr/bin/env ls"')
       backend.execute('ls')
     end
+
+    it "respects the specified directory" do
+      backend.within('/var/log') do
+        expect_system_call('ssh -A -t example.com "cd /var/log && /usr/bin/env ls"')
+        backend.execute('ls')
+      end
+    end
   end
 end

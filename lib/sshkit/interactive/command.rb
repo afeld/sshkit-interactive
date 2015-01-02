@@ -9,7 +9,8 @@ module SSHKit
         @remote_command = remote_command
       end
 
-      # see http://net-ssh.github.io/net-ssh/classes/Net/SSH.html#method-c-start for descriptions
+      # description:
+      # http://net-ssh.github.io/net-ssh/classes/Net/SSH.html#method-c-start
       def netssh_options
         self.host.netssh_options
       end
@@ -69,23 +70,45 @@ module SSHKit
         self.options.join(' ')
       end
 
-      def remote_command_str
-        if self.remote_command
-          %{"#{self.remote_command}"}
+      def path
+        if self.remote_command.is_a?(SSHKit::Command)
+          self.remote_command.options[:in]
         else
+          nil
+        end
+      end
+
+      def cd_command
+        if self.path
+          "cd #{self.path}"
+        else
+          nil
+        end
+      end
+
+      def remote_commands
+        [
+          self.cd_command,
+          self.remote_command
+        ].compact
+      end
+
+      def remote_commands_str
+        cmd = self.remote_commands.join(' && ')
+        if cmd.empty?
           ''
+        else
+          %{"#{cmd}"}
         end
       end
 
       def to_s
-        parts = [
+        [
           'ssh',
           self.options_str,
           self.hostname,
-          self.remote_command_str
-        ]
-
-        parts.reject(&:empty?).join(' ')
+          self.remote_commands_str
+        ].reject(&:empty?).join(' ')
       end
 
       def execute
