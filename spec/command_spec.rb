@@ -46,6 +46,10 @@ describe SSHKit::Interactive::Command do
     end
 
     it "handles a password"
+
+    it "handles all option overrides"
+    # see SSHKit::Host#netssh_options
+    # https://github.com/capistrano/sshkit/blob/master/lib/sshkit/host.rb
   end
 
   describe '#to_s' do
