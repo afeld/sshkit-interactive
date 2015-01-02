@@ -92,4 +92,9 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  config.before(:each) do
+    # block all system calls
+    allow_any_instance_of(SSHKit::Interactive::Command).to receive(:system)
+  end
 end

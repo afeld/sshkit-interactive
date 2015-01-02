@@ -53,22 +53,21 @@ describe SSHKit::Interactive::Command do
   end
 
   describe '#to_s' do
+    let(:host) { SSHKit::Host.new('example.com') }
+
     it "includes options" do
-      host = SSHKit::Host.new('example.com')
       command = SSHKit::Interactive::Command.new(host)
       expect(command).to receive(:options_str).and_return('-A -B -C')
       expect(command.to_s).to eq('ssh -A -B -C example.com')
     end
 
     it "excludes options if they're blank" do
-      host = SSHKit::Host.new('example.com')
       command = SSHKit::Interactive::Command.new(host)
       expect(command).to receive(:options_str).and_return('')
       expect(command.to_s).to eq('ssh example.com')
     end
 
     it "accepts a remote command" do
-      host = SSHKit::Host.new('example.com')
       command = SSHKit::Interactive::Command.new(host, 'ls')
       expect(command.to_s).to eq('ssh -A -t example.com "ls"')
     end
