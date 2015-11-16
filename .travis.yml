@@ -1,6 +1,15 @@
+sudo: false
+
 language: ruby
+
 rvm:
-- 2.0.0
-- jruby-19mode
-- rbx-2
-script: bundle exec rspec
+  - ruby-2.1.7
+  - ruby-2.2.3
+  - rbx-2.5.2
+  - jruby-1.7
+  - jruby-9.0.0.0
+
+gemfile:
+  - spec/gemfiles/Gemfile
+
+script: bundle exec rake spec
