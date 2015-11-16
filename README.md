@@ -45,8 +45,7 @@ Note that you will probably only want to execute on a single host. In Capistrano
 namespace :rails do
   desc "Run Rails console"
   task :console do
-    SSHKit.config.backend = SSHKit::Interactive::Backend
-    on primary(:app) do |host|
+    run_interactively primary(:app) do
       execute(:rails, :console)
     end
   end
