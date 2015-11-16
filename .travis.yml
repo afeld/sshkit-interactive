@@ -12,6 +12,15 @@ rvm:
   - jruby-9.0.0.0
 
 gemfile:
-  - spec/gemfiles/Gemfile
+  - spec/gemfiles/net-ssh2_8.gemfile
+  - spec/gemfiles/net-ssh2_9.gemfile
+  - spec/gemfiles/net-ssh3_0.gemfile
+
+matrix:
+  exclude:
+    - rvm: ruby-1.9.3
+      gemfile: spec/gemfiles/net-ssh3_0.gemfile
+    - rvm: jruby-1.7
+      gemfile: spec/gemfiles/net-ssh3_0.gemfile
 
 script: bundle exec rake spec
