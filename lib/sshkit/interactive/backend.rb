@@ -18,6 +18,15 @@ module SSHKit
         output << remote_command
         Command.new(host, remote_command).execute
       end
+
+      def _unsupported_operation(*args)
+        raise ::SSHKit::Backend::MethodUnavailableError, 'SSHKit::Interactive does not support this operation.'
+      end
+
+      alias :upload! :_unsupported_operation
+      alias :download! :_unsupported_operation
+      alias :test :_unsupported_operation
+      alias :capture :_unsupported_operation
     end
   end
 end

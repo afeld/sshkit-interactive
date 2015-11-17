@@ -31,5 +31,23 @@ describe SSHKit::Interactive::Backend do
     it "respects the specified env"
 
     it "respects the specified user"
+
+    describe 'prevents calling unsupported operations' do
+      it '#upload!' do
+        expect { backend.upload!(:a, :b) }.to raise_error(::SSHKit::Backend::MethodUnavailableError)
+      end
+
+      it '#download!' do
+        expect { backend.download!(:a, :b) }.to raise_error(::SSHKit::Backend::MethodUnavailableError)
+      end
+
+      it '#test' do
+        expect { backend.test(:true) }.to raise_error(::SSHKit::Backend::MethodUnavailableError)
+      end
+
+      it '#capture' do
+        expect { backend.capture(:ls) }.to raise_error(::SSHKit::Backend::MethodUnavailableError)
+      end
+    end
   end
 end
