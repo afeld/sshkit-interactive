@@ -13,10 +13,14 @@ module SSHKit
         @pwd.pop
       end
 
-      def execute(*args, &block)
-        remote_command = command(*args)
-        output << remote_command
-        Command.new(host, remote_command).execute
+      def execute(*args)
+        super
+
+        cmd = Command.new(host, command(*args))
+
+        debug(cmd.to_s)
+
+        cmd.execute
       end
     end
   end
