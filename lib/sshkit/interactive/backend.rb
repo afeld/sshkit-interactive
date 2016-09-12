@@ -28,13 +28,15 @@ module SSHKit
         remove_instance_variable(:@group)
       end
 
-      def execute(*args, &block)
-        options        = args.extract_options!
-        remote_command = command(args, options)
+      def execute(*args)
+        super
 
-        output.log_command_start(remote_command)
+        options = args.extract_options!
+        cmd     = Command.new(host, command(args, options))
 
-        Command.new(host, remote_command).execute
+        debug(cmd.to_s)
+
+        cmd.execute
       end
 
       def _unsupported_operation(*args)
