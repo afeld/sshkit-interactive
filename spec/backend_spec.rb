@@ -22,10 +22,13 @@ describe SSHKit::Interactive::Backend do
       end
     end
 
-    it "respects the specified group"
+    it "respects the specified group" do
+      backend.as(user: :user, group: :group) do
+        expect_system_call('ssh -A -t example.com "sudo -u user && /usr/bin/env ls"')
+        backend.execute('ls')
+      end
+    end
 
     it "respects the specified env"
-
-    it "respects the specified user"
   end
 end
