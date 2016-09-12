@@ -8,6 +8,7 @@ module SSHKit
 
       def within(directory, &_block)
         (@pwd ||= []).push(directory.to_s)
+
         yield
       ensure
         @pwd.pop
