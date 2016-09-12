@@ -6,17 +6,33 @@ module SSHKit
         instance_exec(host, &@block)
       end
 
-      def within(directory, &block)
-        (@pwd ||= []).push directory.to_s
+      def within(directory, &_block)
+        (@pwd ||= []).push(directory.to_s)
         yield
       ensure
         @pwd.pop
       end
 
+      def as(who, &_block)
+        if who.is_a?(Hash)
+          @user  = who[:user]  || who["user"]
+          @group = who[:group] || who["group"]
+        else
+          @user  = who
+          @group = nil
+        end
+
+        yield
+      ensure
+        remove_instance_variable(:@user)
+        remove_instance_variable(:@group)
+      end
+
       def execute(*args)
         super
 
-        cmd = Command.new(host, command(*args))
+        options = args.extract_options!
+        cmd     = Command.new(host, command(args, options))
 
         debug(cmd.to_s)
 
