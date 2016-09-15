@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## 0.2.0 (2016-09-16)
 ### Feature
 - add DSL for interactive command invocation (`run_interactively`)
 
