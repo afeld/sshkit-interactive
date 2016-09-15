@@ -3,133 +3,94 @@ module SSHKit
     class Command
       attr_reader :host, :remote_command
 
-      # remote_command can be an SSHKit::Command or a String
-      def initialize(host, remote_command=nil)
-        @host = host
+      # Instantiate new interactive SSHKit command wrapper.
+      #
+      # @param host [SSHKit::Host] the host to run `remote_command` on.
+      # @param remote_command [SSHKit::Command] the command to run on `host`.
+      def initialize(host, remote_command = nil)
+        @host           = host
         @remote_command = remote_command
       end
 
-      # description:
-      # http://net-ssh.github.io/net-ssh/classes/Net/SSH.html#method-c-start
-      def netssh_options
-        self.host.netssh_options
+      # Run the command on the remote host via SSH binary.
+      def execute
+        system(to_s)
       end
 
-      def user
-        self.host.user
-      end
+      # SSH command arguments
+      def ssh_cmd_args
+        args = []
 
-      def hostname
-        self.host.hostname
-      end
+        args << '-t'
+        args << '-A' if forward_agent?
+        args << "-p #{port}" if port
+        args << "-l #{user}" if user
+        args << %Q{-o "PreferredAuthentications #{auth_methods_str}"} if auth_methods.count > 0
+        args << %Q{-o "ProxyCommand #{proxy_command}"} if proxy
+        args << %Q{-o "HostName #{host_name}"} if host_name
 
-      def forward_agent?
-        !!self.netssh_options[:forward_agent]
-      end
-
-      def keys
-        self.netssh_options[:keys] || []
-      end
-
-      def auth_methods
-        self.netssh_options[:auth_methods]
-      end
-
-      def auth_methods_str
-        self.auth_methods.join(',')
-      end
-
-      def proxy
-        self.netssh_options[:proxy]
-      end
-
-      def proxy_command
-        self.proxy.command_line_template
-      end
-
-      def port
-        self.netssh_options[:port]
-      end
-
-      def options
-        opts = []
-        opts << '-A' if self.forward_agent?
-        self.keys.each do |key|
-          opts << "-i #{key}"
+        keys.each do |key|
+          args << "-i #{key}"
         end
-        opts << "-l #{self.user}" if self.user
-        opts << %{-o "PreferredAuthentications #{self.auth_methods_str}"} if self.auth_methods
-        opts << %{-o "ProxyCommand #{self.proxy_command}"} if self.proxy
-        opts << "-p #{self.port}" if self.port
-        opts << '-t' if self.remote_command
 
-        opts
+        args
       end
 
-      def options_str
-        self.options.join(' ')
-      end
-
-      def remote_user
-        if self.remote_command.is_a?(SSHKit::Command)
-          self.remote_command.options[:user]
-        else
-          nil
-        end
-      end
-
-      def su_command
-        if self.remote_user
-          "sudo -u #{self.remote_user}"
-        else
-          nil
-        end
-      end
-
-      def path
-        if self.remote_command.is_a?(SSHKit::Command)
-          self.remote_command.options[:in]
-        else
-          nil
-        end
-      end
-
-      def cd_command
-        if self.path
-          "cd #{self.path}"
-        else
-          nil
-        end
-      end
-
-      def remote_commands
-        [
-          self.su_command,
-          self.cd_command,
-          self.remote_command
-        ].compact
-      end
-
-      def remote_commands_str
-        cmd = self.remote_commands.join(' && ')
-        if cmd.empty?
-          ''
-        else
-          %{"#{cmd}"}
-        end
-      end
-
+      # Complete command
       def to_s
         [
-          'ssh',
-          self.options_str,
-          self.hostname,
-          self.remote_commands_str
+          :ssh,
+          *ssh_cmd_args,
+          host.hostname,
+          "\"#{remote_command_str}\""
         ].reject(&:empty?).join(' ')
       end
 
-      def execute
-        system(self.to_s)
+      private
+
+      # available options: http://net-ssh.github.io/net-ssh/classes/Net/SSH.html#method-c-start
+      def netssh_options
+        host.netssh_options
+      end
+
+      def user
+        host.user
+      end
+
+      def port
+        netssh_options[:port]
+      end
+
+      def forward_agent?
+        !!netssh_options[:forward_agent]
+      end
+
+      def host_name
+        netssh_options[:host_name]
+      end
+
+      def keys
+        netssh_options[:keys] || []
+      end
+
+      def auth_methods
+        netssh_options[:auth_methods] || []
+      end
+
+      def auth_methods_str
+        auth_methods.join(',')
+      end
+
+      def proxy
+        netssh_options[:proxy]
+      end
+
+      def proxy_command
+        proxy.command_line_template
+      end
+
+      def remote_command_str
+        %Q{\\$SHELL -l -c \\"#{remote_command.to_command}\\"}
       end
     end
   end

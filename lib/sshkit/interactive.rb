@@ -7,6 +7,6 @@ require_relative 'interactive/dsl'
 
 module SSHKit
   module Interactive
-    # Your code goes here...
+    Unsupported = Class.new(SSHKit::StandardError)
   end
 end

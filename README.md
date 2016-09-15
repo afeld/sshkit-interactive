@@ -29,17 +29,11 @@ require 'sshkit/interactive'
 
 ## Usage
 
-From SSHKit, use the [interactive backend](lib/sshkit/interactive/backend.rb) (which makes a system call to `ssh` under the hood), then execute commands as normal.
+Running interactive commands will make a system call to `ssh` under the hood.
 
-```ruby
-SSHKit.config.backend = SSHKit::Interactive::Backend
-hosts = %w{my.server.com}
-on hosts do |host|
-  execute(:vim)
-end
-```
+### DSL
 
-Note that you will probably only want to execute on a single host. In Capistrano, it might look something like this:
+Using the DSL, simply put the command within the `run_interactively` block. In Capistrano, it might look something like this:
 
 ```ruby
 namespace :rails do
@@ -49,6 +43,35 @@ namespace :rails do
       execute(:rails, :console)
     end
   end
+end
+```
+
+It is also possible to set directory and user the Capistrano way:
+
+```ruby
+namespace :rails do
+  desc "Run Rails console"
+  task :console do
+    run_interactively primary(:app) do
+      within current_path do
+        as user: :foobar do
+          execute(:rails, :console)
+        end
+      end
+    end
+  end
+end
+```
+
+### Manually setting the backend
+
+Use the [interactive backend](lib/sshkit/interactive/backend.rb) and execute commands as normal:
+
+```ruby
+SSHKit.config.backend = SSHKit::Interactive::Backend
+hosts = %w{my.server.com}
+on hosts do |host|
+  execute(:vim)
 end
 ```
 

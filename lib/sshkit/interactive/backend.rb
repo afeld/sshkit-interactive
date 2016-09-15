@@ -1,4 +1,3 @@
-# based on https://github.com/jetthoughts/j-cap-recipes/blob/be9dffe279b7bee816c9bafcb3633109096b20d5/lib/sshkit/backends/ssh_command.rb
 module SSHKit
   module Interactive
     class Backend < SSHKit::Backend::Printer
@@ -16,12 +15,14 @@ module SSHKit
 
       def as(who, &_block)
         if who.is_a?(Hash)
-          @user  = who[:user]  || who["user"]
-          @group = who[:group] || who["group"]
+          @user  = who[:user]  || who['user']
+          @group = who[:group] || who['group']
         else
           @user  = who
           @group = nil
         end
+
+        raise SSHKit::Interactive::Unsupported, 'Setting group (through `as`) is currently not supported' unless @group.nil?
 
         yield
       ensure
@@ -41,7 +42,7 @@ module SSHKit
       end
 
       def _unsupported_operation(*args)
-        raise ::SSHKit::Backend::MethodUnavailableError, 'SSHKit::Interactive does not support this operation.'
+        raise SSHKit::Backend::MethodUnavailableError, 'SSHKit::Interactive does not support this operation.'
       end
 
       alias :upload! :_unsupported_operation

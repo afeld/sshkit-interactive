@@ -4,12 +4,22 @@ describe SSHKit::Interactive::DSL do
 
     let(:host) { SSHKit::Host.new('example.com') }
 
-    it "initialize a new command" do
-      expect_system_call('ssh -A -t example.com "/usr/bin/env ls"')
+    it 'will execute interactively' do
+      expect_system_call('ssh -t -A example.com "\\$SHELL -l -c \\"/usr/bin/env ls\\""')
 
       run_interactively host do
         execute(:ls)
       end
+    end
+
+    it 'does not support switching hosts' do
+      expect {
+        run_interactively host do
+          on host do
+            execute(:ls)
+          end
+        end
+      }.to raise_error(SSHKit::Interactive::Unsupported)
     end
   end
 end

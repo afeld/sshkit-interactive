@@ -25,4 +25,7 @@ matrix:
     - rvm: jruby-1.7
       gemfile: spec/gemfiles/net-ssh3_2.gemfile
 
+before_install:
+  - gem install bundler -v '~> 1.13'
+
 script: bundle exec rake spec
