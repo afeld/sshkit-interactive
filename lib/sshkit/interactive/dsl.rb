@@ -3,6 +3,9 @@ module SSHKit
     module DSL
       # run commands interactively
       def run_interactively(host, &block)
+        # Force setting global netssh_options on host if using capistrano
+        SSHKit.config.backend.new(host) { test(:true) }.run
+
         Thread.current[:run_interactively] = true
 
         SSHKit::Interactive::Backend.new(host, &block).run
