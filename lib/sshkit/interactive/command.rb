@@ -25,7 +25,7 @@ module SSHKit
         args << '-A' if forward_agent?
         args << "-p #{port}" if port
         args << "-l #{user}" if user
-        args << %Q{-o "PreferredAuthentications #{auth_methods_str}"} if auth_methods.count > 0
+        args << %Q{-o "PreferredAuthentications #{auth_methods.join(',')}"} if auth_methods.count > 0
         args << %Q{-o "ProxyCommand #{proxy_command}"} if proxy
         args << %Q{-o "HostName #{host_name}"} if host_name
 
@@ -42,7 +42,7 @@ module SSHKit
           :ssh,
           *ssh_cmd_args,
           host.hostname,
-          "\"#{remote_command_str}\""
+          %Q{"\\$SHELL -l -c \\"#{remote_command.to_command}\\""}
         ].reject(&:empty?).join(' ')
       end
 
@@ -70,15 +70,11 @@ module SSHKit
       end
 
       def keys
-        netssh_options[:keys] || []
+        Array(netssh_options[:keys])
       end
 
       def auth_methods
-        netssh_options[:auth_methods] || []
-      end
-
-      def auth_methods_str
-        auth_methods.join(',')
+        Array(netssh_options[:auth_methods])
       end
 
       def proxy
@@ -87,10 +83,6 @@ module SSHKit
 
       def proxy_command
         proxy.command_line_template
-      end
-
-      def remote_command_str
-        %Q{\\$SHELL -l -c \\"#{remote_command.to_command}\\"}
       end
     end
   end
