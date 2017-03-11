@@ -15,6 +15,8 @@ gemfile:
   - spec/gemfiles/net-ssh3_0.gemfile
   - spec/gemfiles/net-ssh3_1.gemfile
   - spec/gemfiles/net-ssh3_2.gemfile
+  - spec/gemfiles/net-ssh4_0.gemfile
+  - spec/gemfiles/net-ssh4_1.gemfile
 
 matrix:
   exclude:
@@ -24,6 +26,10 @@ matrix:
       gemfile: spec/gemfiles/net-ssh3_1.gemfile
     - rvm: jruby-1.7
       gemfile: spec/gemfiles/net-ssh3_2.gemfile
+    - rvm: jruby-1.7
+      gemfile: spec/gemfiles/net-ssh4_0.gemfile
+    - rvm: jruby-1.7
+      gemfile: spec/gemfiles/net-ssh4_1.gemfile
 
 before_install:
   - gem install bundler -v '~> 1.14.0'
