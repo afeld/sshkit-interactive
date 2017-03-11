@@ -3,11 +3,11 @@ sudo: false
 language: ruby
 
 rvm:
-  - ruby-2.2.5
-  - ruby-2.3.1
-  - rbx-2.5.8
+  - ruby-2.2.6
+  - ruby-2.3.3
+  - ruby-2.4.0
   - jruby-1.7
-  - jruby-9.1.2.0
+  - jruby-9.1.7.0
 
 gemfile:
   - spec/gemfiles/net-ssh2_8.gemfile
