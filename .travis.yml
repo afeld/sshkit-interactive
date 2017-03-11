@@ -26,6 +26,6 @@ matrix:
       gemfile: spec/gemfiles/net-ssh3_2.gemfile
 
 before_install:
-  - gem install bundler -v '~> 1.13'
+  - gem install bundler -v '~> 1.14.0'
 
 script: bundle exec rake spec
