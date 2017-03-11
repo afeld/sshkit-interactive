@@ -30,7 +30,12 @@ describe SSHKit::Interactive::Backend do
       }.to raise_error(SSHKit::Interactive::Unsupported)
     end
 
-    it 'respects the specified env'
+    it 'respects the specified env' do
+      backend.with(foo: :bar) do
+        expect_system_call('ssh -t -A example.com "\\$SHELL -l -c \\"( export FOO="bar" ; /usr/bin/env ls )\\""')
+        backend.execute('ls')
+      end
+    end
 
     describe 'prevents calling unsupported operations' do
       it '#upload!' do
