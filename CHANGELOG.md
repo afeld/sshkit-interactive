@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## 0.2.1 (2017-05-01)
 ### Change
 - run dummy command to force setting global netssh_options on host if using with capistrano
 
