@@ -42,7 +42,7 @@ module SSHKit
           :ssh,
           *ssh_cmd_args,
           host.hostname,
-          %Q{"\\$SHELL -l -c \\"#{remote_command.to_command}\\""}
+          %Q{'$SHELL -l -c "#{remote_command.to_command}"'}
         ].reject(&:empty?).join(' ')
       end
 
