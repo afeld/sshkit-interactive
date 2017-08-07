@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.2 (2017-08-07)
+### Change
+- [fix incorrect variable expansion](https://github.com/afeld/sshkit-interactive/pull/16)
+
 ## 0.2.1 (2017-05-01)
 ### Change
 - run dummy command to force setting global netssh_options on host if using with capistrano
