@@ -42,7 +42,7 @@ module SSHKit
           :ssh,
           *ssh_cmd_args,
           host.hostname,
-          %Q{'$SHELL -l -c "#{remote_command.to_command}"'}
+          command
         ].reject(&:empty?).join(' ')
       end
 
@@ -83,6 +83,12 @@ module SSHKit
 
       def proxy_command
         proxy.command_line_template
+      end
+
+      def command
+        cmd = remote_command.to_command.gsub("'", "\\\"") # replace single quotes with double quotes
+
+        %Q{'$SHELL -l -c \"#{cmd}\"'}
       end
     end
   end

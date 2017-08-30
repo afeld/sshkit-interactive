@@ -5,7 +5,7 @@ describe SSHKit::Interactive::DSL do
     let(:host) { SSHKit::Host.new('example.com') }
 
     it 'will execute interactively' do
-      expect_system_call('ssh -t -A example.com "\\$SHELL -l -c \\"/usr/bin/env ls\\""')
+      expect_system_call('ssh -t -A example.com \'$SHELL -l -c "/usr/bin/env ls"\'')
 
       run_interactively host do
         execute(:ls)
