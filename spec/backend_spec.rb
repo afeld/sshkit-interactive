@@ -4,20 +4,22 @@ describe SSHKit::Interactive::Backend do
     let(:backend) { SSHKit::Interactive::Backend.new(host) }
 
     it 'does a system call with the SSH command' do
-      expect_system_call('ssh -t -A example.com "\\$SHELL -l -c \\"/usr/bin/env ls\\""')
+      expect_system_call('ssh -t -A example.com \'$SHELL -l -c "/usr/bin/env ls"\'')
       backend.execute('ls')
     end
 
     it 'respects the specified directory' do
       backend.within('/var/log') do
-        expect_system_call('ssh -t -A example.com "\\$SHELL -l -c \\"cd /var/log && /usr/bin/env ls\\""')
+        expect_system_call('ssh -t -A example.com \'$SHELL -l -c "cd /var/log && /usr/bin/env ls"\'')
+
         backend.execute('ls')
       end
     end
 
     it 'respects the specified user' do
       backend.as('deployer') do
-        expect_system_call('ssh -t -A example.com "\\$SHELL -l -c \\"sudo -u deployer -- sh -c \'/usr/bin/env ls\'\\""')
+        expect_system_call('ssh -t -A example.com \'$SHELL -l -c "sudo -u deployer -- sh -c \\"/usr/bin/env ls\\""\'')
+
         backend.execute('ls')
       end
     end
@@ -32,7 +34,8 @@ describe SSHKit::Interactive::Backend do
 
     it 'respects the specified env' do
       backend.with(foo: :bar) do
-        expect_system_call('ssh -t -A example.com "\\$SHELL -l -c \\"( export FOO="bar" ; /usr/bin/env ls )\\""')
+        expect_system_call('ssh -t -A example.com \'$SHELL -l -c "( export FOO="bar" ; /usr/bin/env ls )"\'')
+
         backend.execute('ls')
       end
     end

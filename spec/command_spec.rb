@@ -85,20 +85,20 @@ describe SSHKit::Interactive::Command do
       cmd = SSHKit::Interactive::Command.new(host, command)
 
       expect(cmd).to receive(:ssh_cmd_args).and_return(%w(-A -B -C))
-      expect(cmd.to_s).to eq('ssh -A -B -C example.com "\\$SHELL -l -c \\"/usr/bin/env ls\\""')
+      expect(cmd.to_s).to eq('ssh -A -B -C example.com \'$SHELL -l -c "/usr/bin/env ls"\'')
     end
 
     it 'excludes options if they\'re blank' do
       cmd = SSHKit::Interactive::Command.new(host, command)
 
       expect(cmd).to receive(:ssh_cmd_args).and_return([])
-      expect(cmd.to_s).to eq('ssh example.com "\\$SHELL -l -c \\"/usr/bin/env ls\\""')
+      expect(cmd.to_s).to eq('ssh example.com \'$SHELL -l -c "/usr/bin/env ls"\'')
     end
 
     it 'accepts a remote command' do
       cmd = SSHKit::Interactive::Command.new(host, command)
 
-      expect(cmd.to_s).to eq('ssh -t -A example.com "\\$SHELL -l -c \\"/usr/bin/env ls\\""')
+      expect(cmd.to_s).to eq('ssh -t -A example.com \'$SHELL -l -c "/usr/bin/env ls"\'')
     end
   end
 end
