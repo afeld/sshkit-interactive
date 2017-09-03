@@ -20,5 +20,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'sshkit', '~> 1.12'
 
   spec.add_development_dependency 'rake',  '~> 12.0.0'
-  spec.add_development_dependency 'rspec', '~> 3.5.0'
+  spec.add_development_dependency 'rspec', '~> 3.6.0'
 end
