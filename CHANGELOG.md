@@ -1,7 +1,16 @@
 # Change Log
 
-## 0.2.2 (2017-08-07)
+## Unreleased
+### Fix
+- [fix sudo with new variable expansion](https://github.com/afeld/sshkit-interactive/pull/18)
+- [fix Travis CI builds](https://github.com/afeld/sshkit-interactive/pull/19)
+
 ### Change
+
+- bump rspec version to 3.6.x
+
+## 0.2.2 (2017-08-07)
+### Fix
 - [fix incorrect variable expansion](https://github.com/afeld/sshkit-interactive/pull/16)
 
 ## 0.2.1 (2017-05-01)
