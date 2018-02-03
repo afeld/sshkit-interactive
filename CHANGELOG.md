@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## 0.3.0 (2018-02-03)
 ### Feature
 - allow to set shell
 
