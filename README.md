@@ -63,6 +63,17 @@ namespace :rails do
 end
 ```
 
+And it is possible to set the shell to be used:
+
+```ruby
+namespace :foo do
+  task :bar do
+    run_interactively primary(:app), shell: '/bin/bash' do
+      ...
+    end
+  end
+end
+
 ### Manually setting the backend
 
 Use the [interactive backend](lib/sshkit/interactive/backend.rb) and execute commands as normal:
