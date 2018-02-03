@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+### Feature
+- allow to set shell
+
 ## 0.2.3 (2017-09-03)
 ### Fix
 - [fix sudo with new variable expansion](https://github.com/afeld/sshkit-interactive/pull/18)

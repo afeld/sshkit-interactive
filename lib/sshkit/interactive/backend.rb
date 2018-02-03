@@ -1,6 +1,12 @@
 module SSHKit
   module Interactive
     class Backend < SSHKit::Backend::Printer
+      def initialize(host, options = {}, &block)
+        super(host, &block)
+
+        @options = options
+      end
+
       def run
         instance_exec(host, &@block)
       end
@@ -34,7 +40,7 @@ module SSHKit
         super
 
         options = args.extract_options!
-        cmd     = Command.new(host, command(args, options))
+        cmd     = Command.new(host, command(args, options), @options)
 
         debug(cmd.to_s)
 

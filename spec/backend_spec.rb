@@ -40,6 +40,12 @@ describe SSHKit::Interactive::Backend do
       end
     end
 
+    it 'respects the specified shell' do
+      expect_system_call('ssh -t -A example.com \'/bin/bash -l -c "/usr/bin/env ls"\'')
+
+      SSHKit::Interactive::Backend.new(host, shell: '/bin/bash').execute('ls')
+    end
+
     describe 'prevents calling unsupported operations' do
       it '#upload!' do
         expect { backend.upload!(:a, :b) }.to raise_error(::SSHKit::Backend::MethodUnavailableError)

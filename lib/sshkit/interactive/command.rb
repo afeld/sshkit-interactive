@@ -7,9 +7,10 @@ module SSHKit
       #
       # @param host [SSHKit::Host] the host to run `remote_command` on.
       # @param remote_command [SSHKit::Command] the command to run on `host`.
-      def initialize(host, remote_command = nil)
+      def initialize(host, remote_command = nil, options = {})
         @host           = host
         @remote_command = remote_command
+        @options        = options
       end
 
       # Run the command on the remote host via SSH binary.
@@ -86,9 +87,10 @@ module SSHKit
       end
 
       def command
-        cmd = remote_command.to_command.gsub("'", "\\\"") # replace single quotes with double quotes
+        cmd   = remote_command.to_command.gsub("'", "\\\"") # replace single quotes with double quotes
+        shell = @options[:shell] || '$SHELL'
 
-        %Q{'$SHELL -l -c \"#{cmd}\"'}
+        %Q{'#{shell} -l -c \"#{cmd}\"'}
       end
     end
   end
