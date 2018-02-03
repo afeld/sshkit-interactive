@@ -3,11 +3,12 @@ sudo: false
 language: ruby
 
 rvm:
-  - ruby-2.2.7
-  - ruby-2.3.4
-  - ruby-2.4.1
+  - ruby-2.2.9
+  - ruby-2.3.6
+  - ruby-2.4.3
+  - ruby-2.5.0
   - jruby-1.7
-  - jruby-9.1.12.0
+  - jruby-9.1.15.0
 
 gemfile:
   - spec/gemfiles/net-ssh2_8.gemfile
@@ -17,6 +18,7 @@ gemfile:
   - spec/gemfiles/net-ssh3_2.gemfile
   - spec/gemfiles/net-ssh4_0.gemfile
   - spec/gemfiles/net-ssh4_1.gemfile
+  - spec/gemfiles/net-ssh4_2.gemfile
 
 matrix:
   exclude:
@@ -30,5 +32,7 @@ matrix:
       gemfile: spec/gemfiles/net-ssh4_0.gemfile
     - rvm: jruby-1.7
       gemfile: spec/gemfiles/net-ssh4_1.gemfile
+    - rvm: jruby-1.7
+      gemfile: spec/gemfiles/net-ssh4_2.gemfile
 
 script: bundle exec rake spec
