@@ -14,7 +14,7 @@ An [SSHKit](https://github.com/capistrano/sshkit) [backend](https://github.com/c
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'sshkit-interactive'
+gem 'sshkit-interactive', require: false
 ```
 
 And then execute:
